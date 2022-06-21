@@ -1,0 +1,56 @@
+<div class="modal-header">
+  <div class="modal-title pull-left" translate>{{ title }}</div>
+
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body" [formGroup]="callbackForm">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="form-group">
+        <label translate>Callback Name</label>
+        <input type="text" class="form-control" placeholder="Name" formControlName="name" />
+        <div *ngIf="name.invalid && (name.dirty || name.touched)">
+          <div *ngIf="name.errors.required" class="invalid-feedback" translate>
+            Name is required.
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group" [hidden]="flow.disabled">
+        <label>Flow</label>
+        <input
+          [typeahead]="flowsList"
+          [typeaheadMinLength]="0"
+          typeaheadOptionField="name"
+          [adaptivePosition]="true"
+          [typeaheadScrollable]="true"
+          [typeaheadOptionsInScrollableView]="10"
+          (typeaheadOnSelect)="selectFlow($event)"
+          (keyup)="onUserManualInputFlow()"
+          placeholder="{{ 'Select Flow' | translate }}"
+          class="form-control"
+          container="body"
+          formControlName="flow"
+        />
+        <div *ngIf="flow.invalid && (flow.dirty || flow.touched)">
+          <div *ngIf="flow.errors.required" class="invalid-feedback" translate>
+            Flow is required.
+          </div>
+          <div *ngIf="flow.errors.invalidFlow" class="invalid-feedback" translate>
+            Please select a valid flow from the dropdown.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-default" (click)="reset()" translate>
+    Clear
+  </button>
+  <button type="button" class="btn btn-primary" (click)="submit()" translate>
+    Create
+  </button>
+</div>
